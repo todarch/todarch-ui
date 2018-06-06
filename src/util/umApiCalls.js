@@ -1,4 +1,5 @@
 import callApi from './callApi';
+import * as methods from './methods';
 
 const UM = "/um";
 const UM_API = UM + "/api";
@@ -7,6 +8,8 @@ const UP = NON_SECURED + "/up";
 const REGISTER_URI = NON_SECURED + "/register";
 const AUTHENTICATE_URI = NON_SECURED + "/authenticate";
 const CURRENT_USER_INFO_URI = UM_API + "/account";
+const IS_ALREADY_AUTHENTICATED = UM_API + '/authenticate';
+const LOGOUT = UM_API + '/logout';
 
 export function up() {
   return callApi({
@@ -28,6 +31,21 @@ export function authenticate(authReq) {
     method: 'POST',
     body: authReq
   });
+}
+
+export function logout() {
+  return callApi({
+    uri: LOGOUT,
+    method: 'POST',
+  });
+}
+
+export function isAlreadyAuthenticated() {
+  return callApi({
+    uri: IS_ALREADY_AUTHENTICATED,
+    method: methods.GET
+  })
+    .then(response => response.ok && response.status === 200, err => false);
 }
 
 export function currentUser() {

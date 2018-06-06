@@ -32,13 +32,22 @@ export default class TopMenu extends Component {
           {(userContext) => {
             const {loggedIn} = userContext;
               return loggedIn ?
-              <Menu.Item
-                name='account'
-                active={activeItem === 'account'}
-                onClick={this.handleItemClick}
-              >
-                <Link to={'/account'}>Account</Link>
-              </Menu.Item>
+                <React.Fragment>
+                  <Menu.Item
+                    name='account'
+                    active={activeItem === 'account'}
+                    onClick={this.handleItemClick}
+                  >
+                    <Link to={'/account'}>Account</Link>
+                  </Menu.Item>
+                  <Menu.Item
+                    name='logout'
+                    active={activeItem === 'logout'}
+                    onClick={this.handleItemClick}
+                  >
+                    <Link to={'/logout'}>Log out</Link>
+                  </Menu.Item>
+                </React.Fragment>
               :
                 <React.Fragment>
                   <Menu.Item

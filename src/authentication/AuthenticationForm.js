@@ -3,6 +3,7 @@ import { Button, Form } from 'semantic-ui-react'
 import { Container } from 'semantic-ui-react'
 import {authenticate} from '../util/umApiCalls';
 import {UserContext} from '../context/UserContext';
+import {Redirect} from 'react-router-dom';
 
 class AuthenticationForm extends React.Component {
   constructor(props) {
@@ -30,7 +31,7 @@ class AuthenticationForm extends React.Component {
   }
 
   handleApiResponse(response) {
-    if (response.ok) {
+    if (response.ok && response.status) {
       console.log("User authenticated successfully");
       this.props.userContext.logIn();
     } else {
@@ -44,21 +45,24 @@ class AuthenticationForm extends React.Component {
 
   render() {
     return(
-      <Container fluid
-                 style={{width: 500}}
-      >
-        <Form loading={this.state.apiCalling}>
-          <Form.Field>
-            <label>Email</label>
-            <input placeholder='joe@schmoe.com' onChange={(e) => this.setState({email: e.target.value})} />
-          </Form.Field>
-          <Form.Field>
-            <label>Password</label>
-            <input type='password' onChange={(e) => this.setState({password: e.target.value})} />
-          </Form.Field>
-          <Button type='submit' onClick={this.handleAuthentication}>Login</Button>
-        </Form>
-      </Container>
+      this.props.userContext.loggedIn ?
+        <Redirect to={'/account'} />
+        :
+        <Container fluid
+                   style={{width: 500}}
+        >
+          <Form loading={this.state.apiCalling}>
+            <Form.Field>
+              <label>Email</label>
+              <input placeholder='joe@schmoe.com' onChange={(e) => this.setState({email: e.target.value})} />
+            </Form.Field>
+            <Form.Field>
+              <label>Password</label>
+              <input type='password' onChange={(e) => this.setState({password: e.target.value})} />
+            </Form.Field>
+            <Button type='submit' onClick={this.handleAuthentication}>Login</Button>
+          </Form>
+        </Container>
     );
 
   }

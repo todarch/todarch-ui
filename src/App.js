@@ -6,6 +6,8 @@ import Account from './account/Account';
 import {Route, BrowserRouter as Router} from 'react-router-dom';
 import TopMenu from './menu/TopMenu';
 import {UserContextProvider} from './context/UserContext'
+import Landing from './pages/Landing';
+import Logout from './authentication/Logout';
 
 /**
  * react-router contains all the common components between react-router-dom and react-router-native.
@@ -27,9 +29,10 @@ class App extends Component {
         <Router>
           <div>
             <TopMenu/>
-            <Route exact  path={'/'} component={Account}/>
+            <Route exact  path={'/'} component={Landing}/>
             <Route exact  path={'/register'} component={RegistrationForm}/>
             <Route exact  path={'/login'} component={AuthenticationForm}/>
+            <Route exact  path={'/logout'} component={Logout}/>
             <Route exact  path={'/account'} component={Account}/>
           </div>
         </Router>
