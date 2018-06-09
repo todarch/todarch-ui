@@ -1,16 +1,15 @@
-import React, { Component } from 'react'
-import { Menu } from 'semantic-ui-react'
-import {Link} from 'react-router-dom';
-import {UserContext} from '../context/UserContext';
+import React, { Component } from 'react';
+import { Menu } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
+import { UserContext } from '../context/UserContext';
 
 export default class TopMenu extends Component {
-
   constructor(props) {
     super(props);
 
     this.handleItemClick = this.handleItemClick.bind(this);
 
-    this.state = {}
+    this.state = {};
   }
 
   handleItemClick = (e, { name }) => this.setState({ activeItem: name });
@@ -21,7 +20,7 @@ export default class TopMenu extends Component {
     return (
       <Menu>
         <Menu.Item
-          name='home'
+          name="home"
           active={activeItem === 'home'}
           onClick={this.handleItemClick}
         >
@@ -29,47 +28,46 @@ export default class TopMenu extends Component {
         </Menu.Item>
 
         <UserContext.Consumer>
-          {(userContext) => {
-            const {loggedIn} = userContext;
-              return loggedIn ?
-                <React.Fragment>
-                  <Menu.Item
-                    name='account'
-                    active={activeItem === 'account'}
-                    onClick={this.handleItemClick}
-                  >
-                    <Link to={'/account'}>Account</Link>
-                  </Menu.Item>
-                  <Menu.Item
-                    name='logout'
-                    active={activeItem === 'logout'}
-                    onClick={this.handleItemClick}
-                  >
-                    <Link to={'/logout'}>Log out</Link>
-                  </Menu.Item>
-                </React.Fragment>
-              :
-                <React.Fragment>
-                  <Menu.Item
-                    name='register'
-                    active={activeItem === 'register'}
-                    onClick={this.handleItemClick}
-                  >
-                    <Link to={'/register'}>Register</Link>
-                  </Menu.Item>
-                  <Menu.Item
-                    name='login'
-                    active={activeItem === 'login'}
-                    onClick={this.handleItemClick}
-                  >
-                    <Link to={'/login'}>Login</Link>
-                  </Menu.Item>
-                </React.Fragment>
+          {userContext => {
+            const { loggedIn } = userContext;
+            return loggedIn ? (
+              <React.Fragment>
+                <Menu.Item
+                  name="account"
+                  active={activeItem === 'account'}
+                  onClick={this.handleItemClick}
+                >
+                  <Link to={'/account'}>Account</Link>
+                </Menu.Item>
+                <Menu.Item
+                  name="logout"
+                  active={activeItem === 'logout'}
+                  onClick={this.handleItemClick}
+                >
+                  <Link to={'/logout'}>Log out</Link>
+                </Menu.Item>
+              </React.Fragment>
+            ) : (
+              <React.Fragment>
+                <Menu.Item
+                  name="register"
+                  active={activeItem === 'register'}
+                  onClick={this.handleItemClick}
+                >
+                  <Link to={'/register'}>Register</Link>
+                </Menu.Item>
+                <Menu.Item
+                  name="login"
+                  active={activeItem === 'login'}
+                  onClick={this.handleItemClick}
+                >
+                  <Link to={'/login'}>Login</Link>
+                </Menu.Item>
+              </React.Fragment>
+            );
           }}
         </UserContext.Consumer>
-
       </Menu>
-    )
+    );
   }
 }
-

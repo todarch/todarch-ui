@@ -1,8 +1,8 @@
-import React from 'react'
-import { Button, Form } from 'semantic-ui-react'
-import { Container } from 'semantic-ui-react'
-import {register} from '../util/umApiCalls';
-import {Redirect} from 'react-router-dom';
+import React from 'react';
+import { Button, Form } from 'semantic-ui-react';
+import { Container } from 'semantic-ui-react';
+import { register } from '../util/umApiCalls';
+import { Redirect } from 'react-router-dom';
 import * as status from 'http-status';
 
 class RegistrationForm extends React.Component {
@@ -16,55 +16,62 @@ class RegistrationForm extends React.Component {
       passwordConfirm: '',
       apiCalling: false,
       redirect: false
-    }
+    };
   }
 
   handleRegister() {
-    console.log("Click on register!");
+    console.log('Click on register!');
     //TODO:selimssevgi: validate input
     const registrationReq = {
       email: this.state.email,
       password: this.state.password
     };
-    this.setState({apiCalling: true});
+    this.setState({ apiCalling: true });
     register(registrationReq)
       .then(json => {
-        console.log("User created successfully");
-        this.setState({redirect: true})
+        console.log('User created successfully');
+        this.setState({ redirect: true });
       })
       .catch(err => {
-        console.log("Something went wrong: ", err.message);
+        console.log('Something went wrong: ', err.message);
       });
-    this.setState({apiCalling: false});
+    this.setState({ apiCalling: false });
   }
 
   render() {
-    return (
-      this.state.redirect === true ?
-        <Redirect to={'/login'} />
-          :
-      <Container fluid
-                 style={{width: 500}}
-      >
+    return this.state.redirect === true ? (
+      <Redirect to={'/login'} />
+    ) : (
+      <Container fluid style={{ width: 500 }}>
         <Form loading={this.state.apiCalling}>
           <Form.Field>
             <label>Email</label>
-            <input placeholder='joe@schmoe.com' onChange={(e) => this.setState({email: e.target.value})} />
+            <input
+              placeholder="joe@schmoe.com"
+              onChange={e => this.setState({ email: e.target.value })}
+            />
           </Form.Field>
           <Form.Field>
             <label>Password</label>
-            <input type='password' onChange={(e) => this.setState({password: e.target.value})} />
+            <input
+              type="password"
+              onChange={e => this.setState({ password: e.target.value })}
+            />
           </Form.Field>
           <Form.Field>
             <label>Password Confirm</label>
-            <input type='password' onChange={(e) => this.setState({passwordConfirm: e.target.value})} />
+            <input
+              type="password"
+              onChange={e => this.setState({ passwordConfirm: e.target.value })}
+            />
           </Form.Field>
-          <Button type='submit' onClick={this.handleRegister}>Register</Button>
+          <Button type="submit" onClick={this.handleRegister}>
+            Register
+          </Button>
         </Form>
       </Container>
     );
   }
-
 }
 
 export default RegistrationForm;

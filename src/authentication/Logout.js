@@ -1,8 +1,8 @@
-import React from 'react'
-import { Loader } from 'semantic-ui-react'
-import {logout} from '../util/umApiCalls';
-import {UserContext} from '../context/UserContext';
-import {Redirect} from 'react-router-dom';
+import React from 'react';
+import { Loader } from 'semantic-ui-react';
+import { logout } from '../util/umApiCalls';
+import { UserContext } from '../context/UserContext';
+import { Redirect } from 'react-router-dom';
 
 class Logout extends React.Component {
   constructor(props) {
@@ -10,8 +10,8 @@ class Logout extends React.Component {
     this.handleLogout = this.handleLogout.bind(this);
 
     this.state = {
-      done: false,
-    }
+      done: false
+    };
   }
 
   componentWillMount() {
@@ -21,22 +21,21 @@ class Logout extends React.Component {
   handleLogout() {
     logout()
       .then(json => {
-        console.log("User logout successfully");
+        console.log('User logout successfully');
         this.props.userContext.logOut();
       })
       .catch(err => {
-        console.log("Something went wrong: ", err.message);
+        console.log('Something went wrong: ', err.message);
       });
-    this.setState({done: true});
+    this.setState({ done: true });
   }
 
   render() {
-    return(
-      this.state.done === true ?
-        <Redirect to={'/'} />
-        :
-        <Loader active inline='centered' />
-    )
+    return this.state.done === true ? (
+      <Redirect to={'/'} />
+    ) : (
+      <Loader active inline="centered" />
+    );
   }
 }
 

@@ -3,9 +3,9 @@ import './App.css';
 import RegistrationForm from './registration/RegistrationForm';
 import AuthenticationForm from './authentication/AuthenticationForm';
 import Account from './account/Account';
-import {Route, BrowserRouter as Router} from 'react-router-dom';
+import { Route, BrowserRouter as Router } from 'react-router-dom';
 import TopMenu from './menu/TopMenu';
-import {UserContextProvider} from './context/UserContext'
+import { UserContextProvider } from './context/UserContext';
 import Landing from './pages/Landing';
 import Logout from './authentication/Logout';
 
@@ -21,23 +21,22 @@ import Logout from './authentication/Logout';
 console.log(process.env.REACT_APP_API_ENDPOINT);
 
 class App extends Component {
-
   // path are matches based on regex, /about also matches / path, use exact
   render() {
     return (
       <UserContextProvider>
         <Router>
           <div>
-            <TopMenu/>
-            <Route exact  path={'/'} component={Landing}/>
-            <Route exact  path={'/register'} component={RegistrationForm}/>
-            <Route exact  path={'/login'} component={AuthenticationForm}/>
-            <Route exact  path={'/logout'} component={Logout}/>
-            <Route exact  path={'/account'} component={Account}/>
+            <TopMenu />
+            <Route exact path={'/'} component={Landing} />
+            <Route exact path={'/register'} component={RegistrationForm} />
+            <Route exact path={'/login'} component={AuthenticationForm} />
+            <Route exact path={'/logout'} component={Logout} />
+            <Route exact path={'/account'} component={Account} />
           </div>
         </Router>
       </UserContextProvider>
-    )
+    );
   }
 }
 

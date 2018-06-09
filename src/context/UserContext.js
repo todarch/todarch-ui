@@ -1,7 +1,6 @@
-import {createContext} from 'react';
-import React, { Component } from 'react'
-import {isAlreadyAuthenticated} from '../util/umApiCalls';
-
+import { createContext } from 'react';
+import React, { Component } from 'react';
+import { isAlreadyAuthenticated } from '../util/umApiCalls';
 
 export const UserContext = createContext();
 
@@ -10,26 +9,26 @@ export class UserContextProvider extends Component {
     super(props);
 
     this.logIn = () => {
-      this.setState({loggedIn: true})
+      this.setState({ loggedIn: true });
     };
 
     this.logOut = () => {
-      this.setState({loggedIn: false})
+      this.setState({ loggedIn: false });
     };
 
     this.state = {
       logIn: this.logIn,
       logOut: this.logOut,
       loggedIn: false,
-      email: '',
+      email: ''
     };
   }
 
   componentWillMount() {
-    console.log("provider component will mount");
+    console.log('provider component will mount');
     isAlreadyAuthenticated()
-      .then(value => this.setState({loggedIn: value}))
-      .catch(err => this.setState({loggedIn: false}));
+      .then(value => this.setState({ loggedIn: value }))
+      .catch(err => this.setState({ loggedIn: false }));
   }
 
   render() {
@@ -40,4 +39,3 @@ export class UserContextProvider extends Component {
     );
   }
 }
-
