@@ -3,6 +3,7 @@ import { Button, Form } from 'semantic-ui-react'
 import { Container } from 'semantic-ui-react'
 import {register} from '../util/umApiCalls';
 import {Redirect} from 'react-router-dom';
+import * as status from 'http-status';
 
 class RegistrationForm extends React.Component {
   constructor(props) {
@@ -27,26 +28,14 @@ class RegistrationForm extends React.Component {
     };
     this.setState({apiCalling: true});
     register(registrationReq)
-      .then(response => this.handleApiResponse(response), err => this.handleApiError(err));
+      .then(json => {
+        console.log("User created successfully");
+        this.setState({redirect: true})
+      })
+      .catch(err => {
+        console.log("Something went wrong: ", err.message);
+      });
     this.setState({apiCalling: false});
-  }
-
-  /**
-   * Note that the promise won't be rejected in case of HTTP 4xx or 5xx server responses.
-   * The promise will be resolved just as it would be for HTTP 2xx.
-   * Inspect the response.status number within the resolved callback to add conditional handling of server errors to your code.
-   */
-  handleApiResponse(response) {
-    if (response.ok) {
-      console.log("User created successfully");
-      this.setState({redirect: true})
-    } else {
-      console.log("unexpected: ", response.statusText);
-    }
-  }
-
-  handleApiError(err) {
-    console.log("Something went wrong: ", err.message);
   }
 
   render() {

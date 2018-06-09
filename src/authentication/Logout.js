@@ -20,21 +20,14 @@ class Logout extends React.Component {
 
   handleLogout() {
     logout()
-      .then(response => this.handleApiResponse(response), err => this.handleApiError(err));
+      .then(json => {
+        console.log("User logout successfully");
+        this.props.userContext.logOut();
+      })
+      .catch(err => {
+        console.log("Something went wrong: ", err.message);
+      });
     this.setState({done: true});
-  }
-
-  handleApiResponse(response) {
-    if (response.ok && response.status === 200) {
-      console.log("User logout successfully");
-      this.props.userContext.logOut();
-    } else {
-      console.log("unexpected: ", response.statusText);
-    }
-  }
-
-  handleApiError(err) {
-    console.log("Something went wrong: ", err.message);
   }
 
   render() {

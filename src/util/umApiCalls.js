@@ -44,8 +44,7 @@ export function isAlreadyAuthenticated() {
   return callApi({
     uri: IS_ALREADY_AUTHENTICATED,
     method: methods.GET
-  })
-    .then(response => response.ok && response.status === 200, err => false);
+  });
 }
 
 export function currentUser() {

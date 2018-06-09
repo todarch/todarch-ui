@@ -1,5 +1,5 @@
 import React from 'react'
-import {Card, Dimmer, Icon, Image, Loader} from 'semantic-ui-react'
+import {Card,Icon, Image} from 'semantic-ui-react'
 import {Container} from 'semantic-ui-react'
 import {currentUser} from '../util/umApiCalls';
 import {Redirect} from 'react-router-dom';
@@ -26,28 +26,16 @@ class Account extends React.Component {
   loadAccount() {
     this.setState({apiCalling: true});
     currentUser()
-      .then(response => this.handleApiResponse(response), err => this.handleApiError(err));
+      .then(json => {
+        console.log("User info fetched successfully");
+        this.setState({loaded: true});
+        this.setState({email: json.email})
+      })
+      .catch(err => {
+        console.log("Something went wrong: ", err.message);
+        this.setState({redirect: true});
+      });
     this.setState({apiCalling: false});
-  }
-
-  handleApiResponse(response) {
-    if (response.ok) {
-      console.log("User info fetched successfully");
-      this.setState({loaded: true});
-      // response.json().then(res => console.log(res.email));
-      response.json().then(res => this.setState({email: res.email}));
-      // let jsonResponse = response.json().then(res => JSON.parse(res));
-      // console.log(jsonResponse);
-      // this.setState({email: jsonResponse.email})
-    } else {
-      console.log("unexpected: ", response.statusText);
-      this.setState({redirect: true});
-    }
-  }
-
-  handleApiError(err) {
-    console.log("Something went wrong: ", err.message);
-    this.setState({redirect: true});
   }
 
   render() {
@@ -86,6 +74,3 @@ class Account extends React.Component {
 }
 
 export default Account;
-// {/*<Dimmer active>*/}
-// {/*<Loader content='Loading' />*/}
-// {/*</Dimmer>*/}

@@ -26,21 +26,14 @@ class AuthenticationForm extends React.Component {
     };
     this.setState({apiCalling: true});
     authenticate(authReq)
-      .then(response => this.handleApiResponse(response), err => this.handleApiError(err));
+      .then(json => {
+        console.log("User authenticated successfully");
+        this.props.userContext.logIn();
+      })
+      .catch(err => {
+        console.log("Something went wrong: ", err.message);
+      });
     this.setState({apiCalling: false});
-  }
-
-  handleApiResponse(response) {
-    if (response.ok && response.status) {
-      console.log("User authenticated successfully");
-      this.props.userContext.logIn();
-    } else {
-      console.log("unexpected: ", response.statusText);
-    }
-  }
-
-  handleApiError(err) {
-    console.log("Something went wrong: ", err.message);
   }
 
   render() {

@@ -28,7 +28,8 @@ export class UserContextProvider extends Component {
   componentWillMount() {
     console.log("provider component will mount");
     isAlreadyAuthenticated()
-      .then(value => this.setState({loggedIn: value}));
+      .then(value => this.setState({loggedIn: value}))
+      .catch(err => this.setState({loggedIn: false}));
   }
 
   render() {
