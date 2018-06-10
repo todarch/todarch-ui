@@ -30,17 +30,17 @@ export default function callApi({
     body: JSON.stringify(body)
   })
     .then(response => {
-      if (
-        response.status === status.NO_CONTENT ||
-        response.status === status.CREATED
-      ) {
-        //TODO:selimssevgi: created will return response
+      if (response.status === status.NO_CONTENT) {
         return { json: [], response };
       }
       return response.json().then(json => ({ json, response }));
     })
     .then(({ json, response }) => {
       if (!response.ok) {
+        // cookie is expired, reload UserContextProvider
+        // if (response.status === status.FORBIDDEN) { // recursion
+        //   window.location.reload();
+        // }
         console.log('error:' + JSON.stringify(json));
         return Promise.reject(json);
       }

@@ -1,46 +1,47 @@
 import React from 'react';
-import { Button, Form } from 'semantic-ui-react';
+import { Button, Form, Header } from 'semantic-ui-react';
 import { Container } from 'semantic-ui-react';
-import { authenticate } from '../util/umApiCalls';
-import { UserContext } from '../context/UserContext';
+import { register } from '../../util/umApiCalls';
 import { Redirect } from 'react-router-dom';
 
-class AuthenticationForm extends React.Component {
+class RegistrationForm extends React.Component {
   constructor(props) {
     super(props);
-    this.handleAuthentication = this.handleAuthentication.bind(this);
+    this.handleRegister = this.handleRegister.bind(this);
 
     this.state = {
       email: '',
       password: '',
-      apiCalling: false
+      passwordConfirm: '',
+      apiCalling: false,
+      redirect: false
     };
   }
 
-  handleAuthentication() {
-    console.log('Click on login!');
+  handleRegister() {
     //TODO:selimssevgi: validate input
-    const authReq = {
+    const registrationReq = {
       email: this.state.email,
       password: this.state.password
     };
     this.setState({ apiCalling: true });
-    authenticate(authReq)
+    register(registrationReq)
       .then(json => {
-        console.log('User authenticated successfully');
-        this.props.userContext.logIn();
+        console.log('User created successfully');
+        this.setState({ redirect: true, apiCalling: false });
       })
       .catch(err => {
         console.log('Something went wrong: ', err.message);
+        this.setState({ apiCalling: false });
       });
-    this.setState({ apiCalling: false });
   }
 
   render() {
-    return this.props.userContext.loggedIn ? (
-      <Redirect to={'/account'} />
+    return this.state.redirect === true ? (
+      <Redirect to={'/login'} />
     ) : (
       <Container fluid style={{ width: 500 }}>
+        <Header as={'h1'}>Create a New Account</Header>
         <Form loading={this.state.apiCalling}>
           <Form.Field>
             <label>Email</label>
@@ -56,8 +57,15 @@ class AuthenticationForm extends React.Component {
               onChange={e => this.setState({ password: e.target.value })}
             />
           </Form.Field>
-          <Button type="submit" onClick={this.handleAuthentication}>
-            Login
+          <Form.Field>
+            <label>Password Confirm</label>
+            <input
+              type="password"
+              onChange={e => this.setState({ passwordConfirm: e.target.value })}
+            />
+          </Form.Field>
+          <Button type="submit" onClick={this.handleRegister}>
+            Register
           </Button>
         </Form>
       </Container>
@@ -65,9 +73,4 @@ class AuthenticationForm extends React.Component {
   }
 }
 
-// https://reactjs.org/docs/context.html#accessing-context-in-lifecycle-methods
-export default props => (
-  <UserContext.Consumer>
-    {userContext => <AuthenticationForm {...props} userContext={userContext} />}
-  </UserContext.Consumer>
-);
+export default RegistrationForm;

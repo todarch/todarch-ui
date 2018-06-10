@@ -1,13 +1,18 @@
 import React, { Component } from 'react';
 import './App.css';
-import RegistrationForm from './registration/RegistrationForm';
-import AuthenticationForm from './authentication/AuthenticationForm';
+import RegistrationForm from './components/um/RegistrationForm';
+import AuthenticationForm from './components/um/AuthenticationForm';
 import Account from './account/Account';
 import { Route, BrowserRouter as Router } from 'react-router-dom';
-import TopMenu from './menu/TopMenu';
 import { UserContextProvider } from './context/UserContext';
-import Landing from './pages/Landing';
 import Logout from './authentication/Logout';
+import routes from './util/routes';
+import NewTodo from './pages/td/NewTodo';
+import ShowTodo from './pages/td/ShowTodo';
+import Home from './pages/Home';
+import { Container } from 'semantic-ui-react';
+import Footer from './components/general/Footer';
+import FixedMenu from './components/general/FixedMenu';
 
 /**
  * react-router contains all the common components between react-router-dom and react-router-native.
@@ -26,14 +31,29 @@ class App extends Component {
     return (
       <UserContextProvider>
         <Router>
-          <div>
-            <TopMenu />
-            <Route exact path={'/'} component={Landing} />
-            <Route exact path={'/register'} component={RegistrationForm} />
-            <Route exact path={'/login'} component={AuthenticationForm} />
-            <Route exact path={'/logout'} component={Logout} />
-            <Route exact path={'/account'} component={Account} />
-          </div>
+          <React.Fragment>
+            <FixedMenu />
+            <DashboardRoute exact path={routes.home} component={Home} />
+            <DashboardRoute
+              exact
+              path={routes.register}
+              component={RegistrationForm}
+            />
+            <DashboardRoute
+              exact
+              path={routes.login}
+              component={AuthenticationForm}
+            />
+            <DashboardRoute exact path={routes.account} component={Account} />
+            <DashboardRoute exact path={routes.newTodo} component={NewTodo} />
+            <DashboardRoute
+              exact
+              path={'/todos/:todoId'}
+              component={ShowTodo}
+            />
+            <Route exact path={routes.logout} component={Logout} />
+            <Footer />
+          </React.Fragment>
         </Router>
       </UserContextProvider>
     );
@@ -41,3 +61,24 @@ class App extends Component {
 }
 
 export default App;
+
+const DashboardLayout = ({ children, ...rest }) => {
+  return (
+    <Container style={{ minHeight: 600, padding: '1em 0em' }}>
+      {children}
+    </Container>
+  );
+};
+
+const DashboardRoute = ({ component: Component, ...rest }) => {
+  return (
+    <Route
+      {...rest}
+      render={matchProps => (
+        <DashboardLayout>
+          <Component {...matchProps} />
+        </DashboardLayout>
+      )}
+    />
+  );
+};
