@@ -17,7 +17,8 @@ class TodoForm extends Component {
     newTodoId: -1,
     title: '',
     description: '',
-    priority: ''
+    priority: '',
+    timeNeededInMin: ''
   };
 
   handleChange = (e, { name, value }) => this.setState({ [name]: value });
@@ -47,13 +48,25 @@ class TodoForm extends Component {
             onChange={this.handleChange}
             name="description"
           />
-          <Form.Select
-            label="Priority"
-            options={priorities}
-            placeholder="Priority"
-            onChange={this.handleChange}
-            name="priority"
-          />
+          <Form.Group>
+            <Form.Input
+              width={6}
+              min={0}
+              label="Time Needed (in minutes)"
+              type="number"
+              placeholder="0"
+              onChange={this.handleChange}
+              name="timeNeededInMin"
+            />
+            <Form.Select
+              width={1}
+              label="Priority"
+              options={priorities}
+              placeholder="Priority"
+              onChange={this.handleChange}
+              name="priority"
+            />
+          </Form.Group>
           <Form.Button content={'Create'} />
         </Form>
       </Container>
