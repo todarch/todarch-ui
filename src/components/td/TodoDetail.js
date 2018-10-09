@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { Card } from 'semantic-ui-react';
+import { Card, List } from 'semantic-ui-react';
 import React from 'react';
 
 class TodoDetail extends Component {
@@ -10,7 +10,14 @@ class TodoDetail extends Component {
       <Card>
         <Card.Content>
           <Card.Header>{this.props.todo.title}</Card.Header>
-          <Card.Meta>Priority: {this.props.todo.priority}</Card.Meta>
+          <Card.Meta>
+            <List>
+              <List.Item>Priority: {this.props.todo.priority}</List.Item>
+              <List.Item>
+                Time Needed (mins): {this.props.todo.timeNeededInMin}
+              </List.Item>
+            </List>
+          </Card.Meta>
           <Card.Description>{this.props.todo.description}</Card.Description>
         </Card.Content>
       </Card>
