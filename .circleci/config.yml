@@ -1,36 +1,90 @@
 version: 2
 
-jobs:
-  build:
+references:
 
+  container_config: &container_config
+    docker:
+    - image: circleci/node:11.1.0 # this image has docker client
     working_directory: ~/repo
 
-    docker:
-      - image: circleci/node:11.1.0 # this image has docker client
+  restore_repo: &restore_repo
+    restore_cache:
+      keys:
+      - v1-repo-{{ .Branch }}-{{ .Revision }}
+      - v1-repo-{{ .Branch }}
+      - v1-repo
 
+  dep_cache_key: &dep_cache_key
+    v1-dependencies-{{ checksum "package.json" }}
+  dep_backup_cache_key: &dep_backup_cache_key
+    v1-dependencies
+
+  restore_deps: &restore_deps
+    restore_cache:
+      keys:
+      - *dep_cache_key
+      - *dep_backup_cache_key
+
+jobs:
+  checkout_code:
+    <<: *container_config
     steps:
-      - checkout
+    - *restore_repo
+    - checkout
+    - save_cache:
+        key: v1-repo-{{ .Branch }}-{{ .Revision }}
+        paths:
+        - .
 
-      - setup_remote_docker:
-          docker_layer_caching: true
+  install:
+    <<: *container_config
+    steps:
+    - *restore_repo
+    - *restore_deps
+    - run: npm install
+    - save_cache:
+        key: *dep_cache_key
+        paths:
+        - node_modules
 
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "package.json" }}
-              # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-
+  deploy:
+    <<: *container_config
+    steps:
+    - setup_remote_docker:
+        docker_layer_caching: true
+    - *restore_repo
+    - *restore_deps
+    - run:
+        name: Setup Environment Variables
+        command: |
+          echo "export TAG_SUFFIX=$(date +%Y%m%d%H%M%S)" >> $BASH_ENV
+          echo 'export IMAGE="todarch/ui:${CIRCLE_BRANCH}-${TAG_SUFFIX}"' >> $BASH_ENV
+    - run:
+        name: Publish docker image
+        command: |
+          docker image build -t $IMAGE .
+          docker login -u $DOCKER_USER -p $DOCKER_PASS
+          docker push $IMAGE
+    - add_ssh_keys:
+        fingerprints:
+        - "80:2d:9c:70:d7:07:3f:fc:25:8d:b1:ed:4b:cd:96:73"
+    - run:
+        name: Deploy app to server via Docker
+        command: |
+          ssh -o StrictHostKeyChecking=no selimssevgi@todarch.com "/bin/bash ./deploy_app.sh ${IMAGE}"
 
-      - run: npm install
+workflows:
+  version: 2
 
-      - save_cache:
-          key: v1-dependencies-{{ checksum "package.json" }}
-          paths:
-            - node_modules
-
-      - run:
-          name: Publish docker image
-          command: |
-            TAG=0.1.$CIRCLE_BUILD_NUM
-            docker image build -t todarch/ui:$TAG .
-            docker login -u $DOCKER_USER -p $DOCKER_PASS
-            docker push todarch/ui:$TAG
+  build_test_deploy:
+    jobs:
+    - checkout_code
+    - install:
+        requires:
+        - checkout_code
+    - deploy:
+        requires:
+        - install
+        filters:
+          branches:
+            only: master
