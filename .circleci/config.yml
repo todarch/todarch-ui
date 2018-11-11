@@ -6,10 +6,13 @@ jobs:
     working_directory: ~/repo
 
     docker:
-      - image: circleci/node:11.1.0
+      - image: circleci/node:11.1.0 # this image has docker client
 
     steps:
       - checkout
+
+      - setup_remote_docker:
+          docker_layer_caching: true
 
       - restore_cache:
           keys:
@@ -23,3 +26,11 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
           paths:
             - node_modules
+
+      - run:
+          name: Publish docker image
+          command: |
+            TAG=0.1.$CIRCLE_BUILD_NUM
+            docker image build -t todarch/ui:$TAG .
+            docker login -u $DOCKER_USER -p $DOCKER_PASS
+            docker push todarch/ui:$TAG
