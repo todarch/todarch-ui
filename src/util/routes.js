@@ -3,6 +3,7 @@ const routes = {
   login: '/login',
   logout: '/logout',
   register: '/register',
+  accountActivation: '/non-secured/activate-account',
   account: '/account',
   newTodo: '/new-todo',
   redirectionAfterLogin: '/',

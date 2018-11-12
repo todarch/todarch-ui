@@ -30,10 +30,7 @@ export default function callApi({
     body: JSON.stringify(body)
   })
     .then(response => {
-      if (response.status === status.NO_CONTENT) {
-        return { json: [], response };
-      }
-      return response.json().then(json => ({ json, response }));
+      return parseJson(response).then(json => ({ json, response }));
     })
     .then(({ json, response }) => {
       if (!response.ok) {
@@ -46,4 +43,15 @@ export default function callApi({
       }
       return json;
     });
+}
+
+/**
+ * Response from the server can be CREATED, NO_CONTENT etc,
+ * if response is successful and has empty response body,
+ * it should handle it gracefully.
+ * @param response after a request to server
+ * @returns promise with empty or parsed json
+ */
+function parseJson(response) {
+  return response.text().then(text => (text ? JSON.parse(text) : {}));
 }
