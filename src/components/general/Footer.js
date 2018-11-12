@@ -11,28 +11,33 @@ class Footer extends React.Component {
               <Grid.Column width={3}>
                 <Header inverted as="h4" content="About" />
                 <List link inverted>
-                  <List.Item as="a">Sitemap</List.Item>
-                  <List.Item as="a">Contact Us</List.Item>
-                  <List.Item as="a">Religious Ceremonies</List.Item>
-                  <List.Item as="a">Gazebo Plans</List.Item>
+                  <List.Item as="a" href="https://todarch.github.io/">
+                    Tech Blog
+                  </List.Item>
+                  <List.Item as="a" href="mailto:info@todarch.com">
+                    info@todarch.com
+                  </List.Item>
                 </List>
               </Grid.Column>
               <Grid.Column width={3}>
-                <Header inverted as="h4" content="Services" />
+                <Header inverted as="h4" content="Connect" />
                 <List link inverted>
-                  <List.Item as="a">Banana Pre-Order</List.Item>
-                  <List.Item as="a">DNA FAQ</List.Item>
-                  <List.Item as="a">How To Access</List.Item>
-                  <List.Item as="a">Favorite X-Men</List.Item>
+                  <List.Item as="a" href="https://github.com/todarch">
+                    On Github
+                  </List.Item>
+                  <List.Item as="a" href="https://twitter.com/todarchapp">
+                    On Twitter
+                  </List.Item>
                 </List>
               </Grid.Column>
               <Grid.Column width={7}>
                 <Header as="h4" inverted>
-                  Footer Header
+                  Todarch App
                 </Header>
                 <p>
-                  Extra space for a call to action inside the footer that could
-                  help re-engage users.
+                  Todarch is an open-source project. We are looking for
+                  passinate developers to join our adventurous journey
+                  developing the next best thing.
                 </p>
               </Grid.Column>
             </Grid.Row>
