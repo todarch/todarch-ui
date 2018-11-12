@@ -10,6 +10,7 @@ const AUTHENTICATE_URI = NON_SECURED + '/authenticate';
 const CURRENT_USER_INFO_URI = UM_API + '/account';
 const IS_ALREADY_AUTHENTICATED = UM_API + '/authenticate';
 const LOGOUT = UM_API + '/logout';
+const ACTIVATE_ACCOUNT_WITH_CODE = NON_SECURED + '/activate-account?code=';
 
 export function up() {
   return callApi({
@@ -51,5 +52,12 @@ export function currentUser() {
   return callApi({
     uri: CURRENT_USER_INFO_URI,
     method: 'GET'
+  });
+}
+
+export function activateAccount(activationCode) {
+  return callApi({
+    uri: ACTIVATE_ACCOUNT_WITH_CODE + activationCode,
+    method: 'POST'
   });
 }

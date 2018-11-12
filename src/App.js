@@ -13,6 +13,7 @@ import Home from './pages/Home';
 import { Container } from 'semantic-ui-react';
 import Footer from './components/general/Footer';
 import FixedMenu from './components/general/FixedMenu';
+import AccountActivationPage from './pages/um/AccountActivationPage';
 
 /**
  * react-router contains all the common components between react-router-dom and react-router-native.
@@ -52,6 +53,11 @@ class App extends Component {
               component={ShowTodo}
             />
             <Route exact path={routes.logout} component={Logout} />
+            <Route
+              exact
+              path={routes.accountActivation}
+              component={AccountActivationPage}
+            />
             <Footer />
           </React.Fragment>
         </Router>
