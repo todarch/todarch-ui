@@ -57,10 +57,8 @@ class Account extends React.Component {
               </Card.Description>
             </Card.Content>
             <Card.Content extra>
-              <a>
-                <Icon name="user" />
-                22 Friends
-              </a>
+              <Icon name="user" />
+              22 Friends
             </Card.Content>
           </Card>
         ) : (

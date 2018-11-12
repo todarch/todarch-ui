@@ -1,5 +1,4 @@
 import 'whatwg-fetch';
-import * as status from 'http-status';
 
 function sanitizeUri(endpoint) {
   return endpoint.charAt(0) !== '/' ? '/' + endpoint : endpoint;
