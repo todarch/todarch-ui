@@ -1,2 +1,6 @@
 body {
 }
+
+.field.error small.helper {
+  color: #cb2431 !important;
+}
