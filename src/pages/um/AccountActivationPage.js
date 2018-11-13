@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { parse } from 'query-string';
 import { activateAccount } from '../../util/umApiCalls';
-import { Container, Icon, Loader } from 'semantic-ui-react';
+import { Container, Icon, Loader, Segment } from 'semantic-ui-react';
 
 export default class AccountActivationPage extends Component {
   constructor(props) {
@@ -34,22 +34,24 @@ export default class AccountActivationPage extends Component {
 
     return (
       <Container fluid style={{ width: 500 }}>
-        {loading ? (
-          <Loader active inline="centered" />
-        ) : (
-          <React.Fragment>
-            <Icon
-              size="massive"
-              color={activated ? 'green' : 'red'}
-              name={activated ? 'checkmark' : 'close'}
-            />
-            <p>
-              {activated
-                ? 'Your account has been successfully activated. Now you can log in.'
-                : 'Invalid activation code.'}
-            </p>
-          </React.Fragment>
-        )}
+        <Segment placeholder textAlign="center">
+          {loading ? (
+            <Loader active inline="centered" />
+          ) : (
+            <React.Fragment>
+              <Icon
+                size="massive"
+                color={activated ? 'green' : 'red'}
+                name={activated ? 'checkmark' : 'close'}
+              />
+              <p>
+                {activated
+                  ? 'Your account has been successfully activated. Now you can log in.'
+                  : 'Activation code is invalid.'}
+              </p>
+            </React.Fragment>
+          )}
+        </Segment>
       </Container>
     );
   }
