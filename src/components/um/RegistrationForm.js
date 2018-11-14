@@ -141,8 +141,8 @@ class RegistrationForm extends React.Component {
                 <Message attached="bottom" warning>
                   <Icon name="help" />
                   Already have an account?&nbsp;<a href="/login">
-                    Login here
-                  </a>&nbsp;instead.
+                    Log in here.
+                  </a>
                 </Message>
               </React.Fragment>
             )
