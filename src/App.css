@@ -4,3 +4,7 @@ body {
 .field.error small.helper {
   color: #cb2431 !important;
 }
+
+.dimmed.dimmable > .ui.modals.dimmer.visible {
+  display: flex !important;
+}
