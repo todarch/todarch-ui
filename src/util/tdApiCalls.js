@@ -22,7 +22,21 @@ export function getTodoById(todoId) {
 
 export function getCurrentUserTodos() {
   return callApi({
-    uri: TODOS_URI,
+    uri: TODOS_URI + '/?q=todoStatus==INITIAL',
     method: methods.GET
+  });
+}
+
+export function deleteTodoById(todoId) {
+  return callApi({
+    uri: TODOS_URI + '/' + todoId,
+    method: methods.DELETE
+  });
+}
+
+export function markTodoAsDone(todoId) {
+  return callApi({
+    uri: TODOS_URI + '/' + todoId + '/done',
+    method: methods.PUT
   });
 }
