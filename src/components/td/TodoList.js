@@ -122,6 +122,7 @@ class TodoItem extends Component {
                   .duration(td.timeNeededInMin, 'minute')
                   .humanize()}
               />
+              {td.tags.map((tag, i) => <Label key={i} content={tag} />)}
             </Item.Extra>
           </Item.Content>
           <Confirm
