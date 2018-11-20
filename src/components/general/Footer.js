@@ -36,7 +36,7 @@ class Footer extends React.Component {
                 </Header>
                 <p>
                   Todarch is an open-source project. We are looking for
-                  passinate developers to join our adventurous journey
+                  passionate developers to join our adventurous journey
                   developing the next best thing.
                 </p>
               </Grid.Column>
