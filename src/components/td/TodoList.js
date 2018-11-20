@@ -9,7 +9,7 @@ import {
 } from 'semantic-ui-react';
 import React from 'react';
 import moment from 'moment';
-import { deleteTodoById } from '../../util/tdApiCalls';
+import { deleteTodoById, markTodoAsDone } from '../../util/tdApiCalls';
 
 class TodoList extends Component {
   render() {
@@ -61,7 +61,7 @@ class TodoItem extends Component {
   markAsDone = () => {
     const todoId = this.props.td.id;
     this.setState({ markingAsDone: true });
-    deleteTodoById(todoId)
+    markTodoAsDone(todoId)
       .then(response => {
         this.setState({ done: true, markingAsDone: false });
       })
