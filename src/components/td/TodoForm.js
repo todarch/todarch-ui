@@ -6,7 +6,9 @@ import {
   Message,
   Button,
   Input,
-  Dropdown
+  Dropdown,
+  Label,
+  Icon
 } from 'semantic-ui-react';
 import { createTodo } from '../../util/tdApiCalls';
 import { Redirect } from 'react-router-dom';
@@ -38,7 +40,8 @@ class TodoForm extends Component {
   state = {
     redirect: false,
     newTodoId: -1,
-    durationUnit: 'minutes'
+    durationUnit: 'minutes',
+    tags: []
   };
 
   handleUnit = (evet, data) => {
@@ -53,7 +56,8 @@ class TodoForm extends Component {
       title: values.title,
       priority: values.priority,
       timeNeededInMin: timeNeededInMin,
-      description: values.description
+      description: values.description,
+      tags: this.state.tags
     };
     actions.setSubmitting(true);
     createTodo(newTodoReq)
@@ -160,6 +164,7 @@ class TodoForm extends Component {
                     />
                     <FieldHelperText info={'1 is lowest, 10 is highest.'} />
                   </Form.Field>
+                  <TagsInput onChange={tags => this.setState({ tags })} />
                   <Form.Field>
                     <Form.TextArea
                       label="Describe"
@@ -187,3 +192,72 @@ class TodoForm extends Component {
 }
 
 export default TodoForm;
+
+class TagsInput extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      tags: [],
+      tagValue: ''
+    };
+  }
+
+  handleAddTag = (e, target) => {
+    const enteredTag = target.value;
+
+    if (enteredTag.endsWith(' ')) {
+      // insert new tag when user enters space
+      const cleanedTag = enteredTag.trim();
+      console.log('cleanTag:', cleanedTag);
+      if (this.state.tags.indexOf(cleanedTag) === -1) {
+        this.setState(
+          {
+            tags: this.state.tags.concat([cleanedTag]),
+            tagValue: ''
+          },
+          () => this.props.onChange(this.state.tags)
+        );
+      } else {
+        console.log('Tag already exist, start over');
+        this.setState({ tagValue: '' });
+      }
+    } else {
+      this.setState({ tagValue: enteredTag });
+    }
+  };
+
+  handleRemoveTag = tagToBeRemoved => {
+    console.log('Should remove', tagToBeRemoved);
+    this.setState({
+      tags: this.state.tags.filter(tag => tag !== tagToBeRemoved)
+    });
+  };
+
+  render() {
+    return (
+      <Form.Field>
+        <Form.Input
+          onChange={this.handleAddTag}
+          value={this.state.tagValue}
+          icon="tags"
+          label="Tags (separate with spaces)"
+          placeholder="Enter tags"
+        />
+        {this.state.tags.length > 0 ? (
+          this.state.tags.map((tag, i) => (
+            <Label as="a" key={i}>
+              {tag}
+              <Icon name="delete" onClick={() => this.handleRemoveTag(tag)} />
+            </Label>
+          ))
+        ) : (
+          <FieldHelperText
+            info={
+              'Add tags to categorize your todo and make it more discoverable.'
+            }
+          />
+        )}
+      </Form.Field>
+    );
+  }
+}
